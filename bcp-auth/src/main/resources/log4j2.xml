@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration status="warn" monitorInterval="300" strict="true" schema="Log4J-V2.2.xsd">
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%[%-5p] [%t] %d{ISO8601} %M [%F:%L] - %m%n" />
+    </Console>
+
+    <RollingFile name="InfoRollingFile" fileName="logs/bcp-auth.log" filePattern="logs/bcp-auth-%d{yyyy-MM-dd}-%i.log">
+      <ThresholdFilter level="INFO"/>
+      <PatternLayout pattern="[%-5p] [%t] %d{ISO8601} %M [%F:%L] - %m%n" />
+      <Policies>
+        <OnStartupTriggeringPolicy />
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="80 MB" />
+      </Policies>
+    </RollingFile>
+
+    <RollingFile name="ErrorRollingFile" fileName="logs/bcp-auth-error.log" filePattern="logs/bcp-auth-error-%d{yyyy-MM-dd}-%i.log">
+      <ThresholdFilter level="ERROR"/>
+      <PatternLayout pattern="[%-5p] [%t] %d{ISO8601} %M [%F:%L] - %m%n" />
+      <Policies>
+        <OnStartupTriggeringPolicy />
+        <TimeBasedTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="80 MB" />
+      </Policies>
+    </RollingFile>
+  </Appenders>
+
+  <Loggers>
+    <Root level="INFO">
+      <AppenderRef ref="Console" />
+      <AppenderRef ref="InfoRollingFile"/>
+      <AppenderRef ref="ErrorRollingFile"/>
+    </Root>
+  </Loggers>
+</Configuration>
