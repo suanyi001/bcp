@@ -1,0 +1,47 @@
+#!/usr/bin/env groovy
+pipeline {
+  agent any
+
+  triggers {
+    pollSCM('H/15 * * * *')
+  }
+
+  parameters {
+    string(name: 'GROUP_NAME', defaultValue: 'bcp', description: 'Group Name')
+    string(name: 'PROJECT_NAME', defaultValue: 'bcp-auth', description: 'Project Name')
+    string(name: 'GITLAB_URL', defaultValue: 'ssh://git@10.56.24.67:10022/Nokia/bcp.git', description: 'GitLab URL')
+    string(name: 'CRED_ID', defaultValue: '3d56e592-ce80-4e23-b849-76c1048d877b', description: 'Cred ID for Jenkins')
+    string(name: 'DEPLOY_PATH', defaultValue: '/datafile/NokiaSAS/bcp-auth', description: 'Deploy Path')
+  }
+
+  tools { maven 'maven3' }
+
+  stages {
+    stage('get clone'){
+      steps {
+        //check CODE
+        git credentialsId: params.CRED_ID, url: params.GITLAB_URL, branch: 'master'
+      }
+    }
+
+    stage('mvn build'){
+      steps {
+        //mvn构建
+        sh "mvn -f ${params.PROJECT_NAME}/pom.xml clean package"
+      }
+    }
+
+    stage('deploy'){
+      steps {
+        sh "${params.DEPLOY_PATH}/bin/stop.sh"
+        sh "sleep 3s"
+        sh "/bin/cp -rfv ${params.PROJECT_NAME}/target/bcp-auth-0.0.1-SNAPSHOT.jar ${params.DEPLOY_PATH}"
+        // sh "/bin/cp -rfv target/${ARTIFACTID}-${VERSION}.jar ${params.DEPLOY_PATH}"
+        // sh "/bin/cp -rfv target/deploy/* ${params.DEPLOY_PATH}"
+        // sh "sudo chmod u+x ${params.DEPLOY_PATH}/bin/*.sh"
+        // sh "JENKINS_NODE_COOKIE=dontKillMe ${params.DEPLOY_PATH}/run"
+        sh "JENKINS_NODE_COOKIE=dontKillMe ${params.DEPLOY_PATH}/bin/start.sh"
+      }
+    }
+  }
+}
