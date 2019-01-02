@@ -54,6 +54,25 @@ spring:
     basename: messages/messages
     cache-second: 3600
     encoding: UTF-8
+  servlet:
+    multipart:
+      # 上传文件总的最大值
+      max-request-size: 10MB
+      # 单个文件的最大值
+      max-file-size: 10MB
 management:
   security:
     enabled: false
+feign: 
+  httpclient: 
+    enabled: true
+org:
+  apache:
+    tomcat:
+      util:
+        buf:
+          UDecoder:
+            ALLOW_ENCODED_SLASH: true
+bcp:
+  upload:
+    tempPath: D:/
