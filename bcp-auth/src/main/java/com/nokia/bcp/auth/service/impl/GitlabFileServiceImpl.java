@@ -61,7 +61,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 				result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_NO_PROJECT));
 				return result;
 			}
-			long groupId = projectOptional.get().getGroupId();
+			long groupId = projectOptional.get().getDevopsGroup().getId();
 			int docsProjectId = projectOptional.get().getDocsProjectId();
 
 			Map<String, String> params = new HashMap<String, String>();
@@ -119,7 +119,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 				result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_NO_PROJECT));
 				return result;
 			}
-			long groupId = projectOptional.get().getGroupId();
+			long groupId = projectOptional.get().getDevopsGroup().getId();
 			int docsProjectId = projectOptional.get().getDocsProjectId();
 
 			GitlabClient gitlabClient = GitlabClientBuilder.getOrCreateByGroup(groupId);
@@ -146,7 +146,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 			result.setData(resource);
 		} catch (Exception e) {
 			Log.error("", e);
-			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_QUE_FILE));
+			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_DOWNLOAD_FILE));
 		} finally {
 			IOUtils.closeQuietly(response);
 		}
@@ -172,7 +172,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 				result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_NO_PROJECT));
 				return result;
 			}
-			long groupId = projectOptional.get().getGroupId();
+			long groupId = projectOptional.get().getDevopsGroup().getId();
 			int docsProjectId = projectOptional.get().getDocsProjectId();
 
 			GitlabClient gitlabClient = GitlabClientBuilder.getOrCreateByGroup(groupId);
@@ -209,7 +209,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 			result.setData(tempFile.getAbsolutePath());
 		} catch (Exception e) {
 			Log.error("", e);
-			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_QUE_FILE));
+			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_UPLOAD_FILE));
 		} finally {
 			IOUtils.closeQuietly(fio);
 			IOUtils.closeQuietly(response);
@@ -227,7 +227,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 				result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_NO_PROJECT));
 				return result;
 			}
-			long groupId = projectOptional.get().getGroupId();
+			long groupId = projectOptional.get().getDevopsGroup().getId();
 			int docsProjectId = projectOptional.get().getDocsProjectId();
 
 			GitlabClient gitlabClient = GitlabClientBuilder.getOrCreateByGroup(groupId);

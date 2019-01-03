@@ -30,6 +30,9 @@ public class BcpAuth implements WebMvcConfigurer {
 		registry.addInterceptor(lci);
 	}
 
+	/**
+	 * 请求匹配处理方法时不对 URL 解码
+	 */
 	@Override
 	public void configurePathMatch(PathMatchConfigurer configurer) {
 		UrlPathHelper urlPathHelper = new UrlPathHelper();

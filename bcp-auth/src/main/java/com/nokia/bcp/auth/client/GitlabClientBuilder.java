@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import com.nokia.bcp.auth.entity.GitlabServer;
+import com.nokia.bcp.auth.entity.DevopsGitlab;
 import com.nokia.bcp.auth.repository.GitlabRepository;
 
 import feign.Feign;
@@ -42,7 +42,7 @@ public class GitlabClientBuilder {
 	private static HttpClient httpClient;
 
 	public static GitlabClient getOrCreateByGroup(long groupId) {
-		GitlabServer gitlabServer = gitlabRepository.findByGroupId(groupId);
+		DevopsGitlab gitlabServer = gitlabRepository.findByGroupId(groupId);
 		long gitlabId = null == gitlabServer ? -1 : gitlabServer.getId();
 		return getOrCreate(gitlabId);
 	}
@@ -51,7 +51,7 @@ public class GitlabClientBuilder {
 		if (!gitlabClientMap.containsKey(gitlabId)) {
 			synchronized (gitlabClientMap) {
 				if (!gitlabClientMap.containsKey(gitlabId)) {
-					GitlabServer gitlabServer = gitlabRepository.findById(gitlabId).get();
+					DevopsGitlab gitlabServer = gitlabRepository.findById(gitlabId).get();
 					ApacheHttpClient apacheHttpClient = new ApacheHttpClient(httpClient);
 					GitlabClient gitlabClient = Feign.builder().decoder(new JacksonDecoder())
 							.encoder(new JacksonEncoder()).options(new Request.Options(10000, 30000))
@@ -69,7 +69,7 @@ public class GitlabClientBuilder {
 	}
 
 	public static String getTokenByGroup(long groupId) {
-		GitlabServer gitlabServer = gitlabRepository.findByGroupId(groupId);
+		DevopsGitlab gitlabServer = gitlabRepository.findByGroupId(groupId);
 		return gitlabTokenMap.get(null == gitlabServer ? -1 : gitlabServer.getId());
 	}
 
