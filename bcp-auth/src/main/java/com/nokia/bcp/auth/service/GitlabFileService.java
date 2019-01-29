@@ -22,6 +22,28 @@ public interface GitlabFileService {
 	ServiceResult<List<GitlabFile>> listFiles(int projectId, String subpath);
 
 	/**
+	 * 解析项目下RobotFramework测试套。
+	 * 
+	 * @param projectId
+	 *            项目 ID
+	 * @param subpath
+	 *            子目录
+	 * @return 解析指定子目录下的所有测试套文件
+	 */
+	ServiceResult<Void> parseRFFiles(int projectId, String subpath);
+
+	/**
+	 * 解析RobotFramework测试报告。
+	 * 
+	 * @param projectId
+	 *            项目 ID
+	 * @param report
+	 *            报告内容
+	 * @return 解析RobotFramework测试报告
+	 */
+	ServiceResult<Void> parseRFReport(int projectId, String report);
+
+	/**
 	 * 下载项目文档，只支持下载单个文件。
 	 * 
 	 * @param projectId
@@ -57,6 +79,7 @@ public interface GitlabFileService {
 	ServiceResult<String> deleteFile(int projectId, String path);
 
 	String KEY_MSG_ERR_QUE_FILE = "MSG_ERR_QUE_FILE";
+	String KEY_MSG_ERR_PARSE_TEST_SUITES = "MSG_ERR_PARSE_TEST_SUITES";
 	String KEY_MSG_ERR_DEL_FILE = "MSG_ERR_DEL_FILE";
 	String KEY_MSG_ERR_UPLOAD_FILE = "MSG_ERR_UPLOAD_FILE";
 	String KEY_MSG_ERR_DOWNLOAD_FILE = "MSG_ERR_DOWNLOAD_FILE";

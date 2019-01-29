@@ -3,7 +3,7 @@
 <Configuration status="warn" monitorInterval="300" strict="true" schema="Log4J-V2.2.xsd">
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%[%-5p] [%t] %d{ISO8601} %M [%F:%L] - %m%n" />
+      <PatternLayout pattern="[%-5p] [%t] %d{ISO8601} %M [%F:%L] - %m%n" />
     </Console>
 
     <RollingFile name="InfoRollingFile" fileName="logs/bcp-auth.log" filePattern="logs/bcp-auth-%d{yyyy-MM-dd}-%i.log">

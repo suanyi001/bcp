@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * DevOps 项目
@@ -26,6 +27,7 @@ import lombok.Data;
 @Entity
 @Table(name = "mgmt_project")
 @Data
+@ToString(exclude = { "devopsGroup" })
 public class DevopsProject {
 
 	@Id
@@ -52,6 +54,9 @@ public class DevopsProject {
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<DevopsProjectUserGroup> userGroupList;
+
+	@OneToMany(mappedBy = "devopsProject", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<RobotTestSuite> testSuiteList;
 
 	// @ManyToMany
 	// @JoinTable(name = "mgmt_project_user", joinColumns = @JoinColumn(name =

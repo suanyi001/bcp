@@ -20,8 +20,9 @@ spring:
     # Show or not log for each sql query
     show-sql: true
     # Hibernate ddl auto (create, create-drop, update, validate)
-    # hibernate:
-      # ddl-auto: validate
+    hibernate:
+      # ddl-auto: create/create-drop/update/validate
+      ddl-auto: update
       # Naming strategy
     open-in-view: true
     properties:

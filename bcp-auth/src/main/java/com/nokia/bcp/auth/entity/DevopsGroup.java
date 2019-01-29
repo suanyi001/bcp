@@ -20,6 +20,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * DevOps 租户
@@ -30,6 +31,7 @@ import lombok.Data;
 @Entity
 @Table(name = "mgmt_group")
 @Data
+@ToString(exclude = { "gitlab", "jenkins", "harbor" })
 public class DevopsGroup {
 
 	@Id

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,6 +53,29 @@ public class FileController extends BaseController {
 		} else {
 			setRespStatus(501, result.getMessage());
 			return null;
+		}
+	}
+
+	@PostMapping(path = "/project/{id}/cases")
+	@ApiOperation("解析测试用例文件")
+	@ApiResponses({ @ApiResponse(code = 501, message = "参数错误"), @ApiResponse(code = 401, message = "鉴权失败") })
+	public void parseTestSuites(@PathVariable(name = "id", required = true) int projectId,
+			@RequestParam(name = "path", required = true) String subpath) {
+		Log.info(">>>>> path: " + subpath);
+		ServiceResult<Void> result = fileService.parseRFFiles(projectId, subpath);
+		if (!result.isSuccess()) {
+			setRespStatus(501, result.getMessage());
+		}
+	}
+
+	@PostMapping(path = "/project/{id}/report")
+	@ApiOperation("解析测试报告")
+	@ApiResponses({ @ApiResponse(code = 501, message = "参数错误"), @ApiResponse(code = 401, message = "鉴权失败") })
+	public void parseTestReport(@PathVariable(name = "id", required = true) int projectId, @RequestBody String report) {
+		Log.info(">>>>> report: " + report);
+		ServiceResult<Void> result = fileService.parseRFReport(projectId, report);
+		if (!result.isSuccess()) {
+			setRespStatus(501, result.getMessage());
 		}
 	}
 
