@@ -13,10 +13,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.nokia.bcp.auth.entity.robot.RFTestReport;
-import com.nokia.bcp.auth.entity.robot.RSTBlock;
-import com.nokia.bcp.auth.entity.robot.RSTFile;
-import com.nokia.bcp.auth.entity.robot.RSTInline;
+import com.nokia.bcp.auth.entity.robot.report.RFTestReport;
+import com.nokia.bcp.auth.entity.robot.report.RSTBlock;
+import com.nokia.bcp.auth.entity.robot.report.RSTFile;
+import com.nokia.bcp.auth.entity.robot.report.RSTInline;
 
 public class RFUtils {
 

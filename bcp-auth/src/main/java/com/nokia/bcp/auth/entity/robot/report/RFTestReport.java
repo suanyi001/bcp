@@ -1,4 +1,4 @@
-package com.nokia.bcp.auth.entity.robot;
+package com.nokia.bcp.auth.entity.robot.report;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;

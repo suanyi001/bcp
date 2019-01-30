@@ -1,4 +1,4 @@
-package com.nokia.bcp.auth.entity.robot;
+package com.nokia.bcp.auth.entity.robot.report;
 
 import java.util.Date;
 

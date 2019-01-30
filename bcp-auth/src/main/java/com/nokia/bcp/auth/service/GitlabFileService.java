@@ -44,6 +44,30 @@ public interface GitlabFileService {
 	ServiceResult<Void> parseRFReport(int projectId, String report);
 
 	/**
+	 * 修改测试套缺陷严重级别。
+	 * 
+	 * @param testSuiteId
+	 *            测试套 ID
+	 * @param bugLevel
+	 *            缺陷严重级别
+	 * @param recursive
+	 *            是否修改相关测试用例缺陷严重级别
+	 * @return 修改测试套缺陷严重级别
+	 */
+	ServiceResult<Void> changeSuiteBugLevel(int testSuiteId, String bugLevel, boolean recursive);
+
+	/**
+	 * 修改测试用例缺陷严重级别。
+	 * 
+	 * @param testSuiteId
+	 *            测试用例 ID
+	 * @param bugLevel
+	 *            缺陷严重级别
+	 * @return 修改测试用例缺陷严重级别
+	 */
+	ServiceResult<Void> changeCaseBugLevel(int testCaseId, String bugLevel);
+
+	/**
 	 * 下载项目文档，只支持下载单个文件。
 	 * 
 	 * @param projectId
@@ -85,5 +109,11 @@ public interface GitlabFileService {
 	String KEY_MSG_ERR_DOWNLOAD_FILE = "MSG_ERR_DOWNLOAD_FILE";
 	String KEY_MSG_ERR_NO_PROJECT = "MSG_ERR_NO_PROJECT";
 	String KEY_MSG_ERR_EMPTY_FILE = "MSG_ERR_EMPTY_FILE";
+
+	String KEY_MSG_INVALID_BUG_LEVEL = "MSG_INVALID_BUG_LEVEL";
+	String KEY_MSG_NO_TEST_SUITE = "MSG_NO_TEST_SUITE";
+	String KEY_MSG_NO_TEST_CASE = "MSG_NO_TEST_CASE";
+	String KEY_MSG_ERR_UPD_TEST_SUITE = "MSG_ERR_UPD_TEST_SUITE";
+	String KEY_MSG_ERR_UPD_TEST_CASE = "MSG_ERR_UPD_TEST_CASE";
 
 }

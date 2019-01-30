@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,6 +64,31 @@ public class FileController extends BaseController {
 			@RequestParam(name = "path", required = true) String subpath) {
 		Log.info(">>>>> path: " + subpath);
 		ServiceResult<Void> result = fileService.parseRFFiles(projectId, subpath);
+		if (!result.isSuccess()) {
+			setRespStatus(501, result.getMessage());
+		}
+	}
+
+	@PutMapping(path = "/suite/{id}")
+	@ApiOperation("修改测试套缺陷严重级别")
+	@ApiResponses({ @ApiResponse(code = 501, message = "参数错误"), @ApiResponse(code = 401, message = "鉴权失败") })
+	public void changeSuiteBugLevel(@PathVariable(name = "id", required = true) int testSuiteId,
+			@RequestParam(name = "bugLevel", required = true) String bugLevel,
+			@RequestParam(name = "recursive", required = false, defaultValue = "false") boolean recursive) {
+		Log.info(">>>>> bugLevel: " + bugLevel);
+		ServiceResult<Void> result = fileService.changeSuiteBugLevel(testSuiteId, bugLevel, recursive);
+		if (!result.isSuccess()) {
+			setRespStatus(501, result.getMessage());
+		}
+	}
+
+	@PutMapping(path = "/case/{id}")
+	@ApiOperation("修改测试用例缺陷严重级别")
+	@ApiResponses({ @ApiResponse(code = 501, message = "参数错误"), @ApiResponse(code = 401, message = "鉴权失败") })
+	public void changeCaseeBugLevel(@PathVariable(name = "id", required = true) int testCaseeId,
+			@RequestParam(name = "bugLevel", required = true) String bugLevel) {
+		Log.info(">>>>> bugLevel: " + bugLevel);
+		ServiceResult<Void> result = fileService.changeCaseBugLevel(testCaseeId, bugLevel);
 		if (!result.isSuccess()) {
 			setRespStatus(501, result.getMessage());
 		}

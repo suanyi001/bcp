@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.nokia.bcp.auth.entity.robot.RobotTestSuite;
 
 import lombok.Data;
 import lombok.ToString;

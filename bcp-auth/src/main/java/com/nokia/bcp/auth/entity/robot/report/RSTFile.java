@@ -1,30 +1,23 @@
-package com.nokia.bcp.auth.entity.robot;
+package com.nokia.bcp.auth.entity.robot.report;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import lombok.Data;
 
 @Data
+@JacksonXmlRootElement(localName = "document")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RFTestSuite {
-	@JacksonXmlProperty(isAttribute = true)
-	private String id;
-
-	@JacksonXmlProperty(isAttribute = true)
-	private String name;
-
-	@JacksonXmlProperty(isAttribute = true)
+public class RSTFile {
+	@JacksonXmlProperty(isAttribute = true, localName = "source")
 	private String source;
 
 	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<RFTestSuite> suite;
+	@JacksonXmlProperty(localName = "literal_block")
+	private List<RSTBlock> blocks;
 
-	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<RFTestCase> test;
-
-	private RFStatus status;
 }

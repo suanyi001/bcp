@@ -1,4 +1,4 @@
-package com.nokia.bcp.auth.entity;
+package com.nokia.bcp.auth.entity.robot;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

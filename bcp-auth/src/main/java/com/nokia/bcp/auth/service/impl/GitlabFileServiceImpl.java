@@ -37,17 +37,18 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.nokia.bcp.auth.client.GitlabClient;
 import com.nokia.bcp.auth.client.GitlabClientBuilder;
 import com.nokia.bcp.auth.common.RFUtils;
 import com.nokia.bcp.auth.entity.DevopsProject;
 import com.nokia.bcp.auth.entity.GitlabFile;
-import com.nokia.bcp.auth.entity.RobotTestCase;
-import com.nokia.bcp.auth.entity.RobotTestSuite;
 import com.nokia.bcp.auth.entity.ServiceResult;
-import com.nokia.bcp.auth.entity.robot.RFTestCase;
-import com.nokia.bcp.auth.entity.robot.RFTestReport;
-import com.nokia.bcp.auth.entity.robot.RFTestSuite;
+import com.nokia.bcp.auth.entity.robot.RobotTestCase;
+import com.nokia.bcp.auth.entity.robot.RobotTestSuite;
+import com.nokia.bcp.auth.entity.robot.report.RFTestCase;
+import com.nokia.bcp.auth.entity.robot.report.RFTestReport;
+import com.nokia.bcp.auth.entity.robot.report.RFTestSuite;
 import com.nokia.bcp.auth.repository.DevopsProjectRepository;
 import com.nokia.bcp.auth.repository.RobotTestCaseDao;
 import com.nokia.bcp.auth.repository.RobotTestSuiteDao;
@@ -205,6 +206,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 					testSuite = new RobotTestSuite();
 					testSuite.setDevopsProject(projectOptional.get());
 					testSuite.setFilePath(filePath);
+					testSuite.setBugLevel(dftBugLevel);
 					testSuite.setTestCaseList(testCaseList);
 					currentTestSuites.put(filePath, testSuite);
 					needParse = true;
@@ -262,6 +264,61 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 		return result;
 	}
 
+	public ServiceResult<Void> changeSuiteBugLevel(int testSuiteId, String bugLevel, boolean recursive) {
+		ServiceResult<Void> result = new ServiceResult<>();
+
+		if (!validBugLevels.contains(bugLevel)) {
+			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_INVALID_BUG_LEVEL));
+			return result;
+		}
+
+		try {
+			Optional<RobotTestSuite> testSuiteOptional = robotTestSuiteDao.findById((long) testSuiteId);
+			if (testSuiteOptional.isPresent()) {
+				RobotTestSuite testSuite = testSuiteOptional.get();
+				if (recursive) {
+					for (RobotTestCase testCase : testSuite.getTestCaseList()) {
+						testCase.setBugLevel(bugLevel);
+					}
+				}
+				testSuite.setBugLevel(bugLevel);
+				robotTestSuiteDao.save(testSuite);
+				result.setSuccess(true);
+			} else {
+				result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_NO_TEST_SUITE));
+			}
+		} catch (Exception e) {
+			Log.error("", e);
+			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_UPD_TEST_SUITE));
+		}
+		return result;
+	}
+
+	public ServiceResult<Void> changeCaseBugLevel(int testCaseId, String bugLevel) {
+		ServiceResult<Void> result = new ServiceResult<>();
+
+		if (!validBugLevels.contains(bugLevel)) {
+			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_INVALID_BUG_LEVEL));
+			return result;
+		}
+
+		try {
+			Optional<RobotTestCase> testCaseOptional = robotTestCaseDao.findById((long) testCaseId);
+			if (testCaseOptional.isPresent()) {
+				RobotTestCase testCase = testCaseOptional.get();
+				testCase.setBugLevel(bugLevel);
+				robotTestCaseDao.save(testCase);
+				result.setSuccess(true);
+			} else {
+				result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_NO_TEST_CASE));
+			}
+		} catch (Exception e) {
+			Log.error("", e);
+			result.setMessage(LocaleUtils.getLocaleMsg(KEY_MSG_ERR_UPD_TEST_CASE));
+		}
+		return result;
+	}
+
 	public ServiceResult<Void> parseRFReport(int projectId, String report) {
 		ServiceResult<Void> result = new ServiceResult<>();
 		Response response = null;
@@ -297,7 +354,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 					if ("PASS".equals(executedTestCase.getStatus().getStatus())) {
 						parsedReport.passCnt += 1;
 					} else {
-						String bugLevel = "Fatal";
+						String bugLevel = dftBugLevel;
 						if (testCaseMap.containsKey(executedTestCase.getName())) {
 							RobotTestCase testCase = testCaseMap.get(executedTestCase.getName());
 							Log.info(">>>>testCase: " + testCase);
@@ -309,16 +366,16 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 						// TODO 提交缺陷
 
 						switch (bugLevel) {
-						case "Fatal":
+						case BUG_LEVEL_FATAL:
 							parsedReport.fatalCnt += 1;
 							break;
-						case "Critical":
+						case BUG_LEVEL_CRITICAL:
 							parsedReport.criticalCnt += 1;
 							break;
-						case "Major":
+						case BUG_LEVEL_MAJOR:
 							parsedReport.majorCnt += 1;
 							break;
-						case "Minor":
+						case BUG_LEVEL_MINOR:
 							parsedReport.minorCnt += 1;
 							break;
 						}
@@ -542,5 +599,15 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 		private int majorCnt = 0;
 		private int minorCnt = 0;
 	}
+
+	private static final String BUG_LEVEL_FATAL = "Fatal";
+	private static final String BUG_LEVEL_CRITICAL = "Critical";
+	private static final String BUG_LEVEL_MAJOR = "Major";
+	private static final String BUG_LEVEL_MINOR = "Minor";
+
+	private static final Set<String> validBugLevels = new HashSet<>(
+			Lists.newArrayList(BUG_LEVEL_FATAL, BUG_LEVEL_CRITICAL, BUG_LEVEL_MAJOR, BUG_LEVEL_MINOR));
+
+	private static final String dftBugLevel = BUG_LEVEL_CRITICAL;
 
 }

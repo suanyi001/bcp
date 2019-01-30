@@ -1,4 +1,4 @@
-package com.nokia.bcp.auth.entity;
+package com.nokia.bcp.auth.entity.robot;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.nokia.bcp.auth.entity.DevopsProject;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

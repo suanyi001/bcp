@@ -1,22 +1,17 @@
-package com.nokia.bcp.auth.entity.robot;
-
-import java.util.List;
+package com.nokia.bcp.auth.entity.robot.report;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
 import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RSTBlock {
-
+public class RSTInline {
 	@JacksonXmlProperty(isAttribute = true, localName = "classes")
 	private String classes;
 
-	@JacksonXmlElementWrapper(useWrapping = false)
-	@JacksonXmlProperty(localName = "inline")
-	private List<RSTInline> inline;
-
+	@JacksonXmlText
+	private String content;
 }
