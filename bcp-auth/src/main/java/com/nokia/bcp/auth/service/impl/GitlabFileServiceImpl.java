@@ -40,7 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.nokia.bcp.auth.client.GitlabClient;
 import com.nokia.bcp.auth.client.GitlabClientBuilder;
-import com.nokia.bcp.auth.common.RFUtils;
 import com.nokia.bcp.auth.entity.DevopsProject;
 import com.nokia.bcp.auth.entity.GitlabFile;
 import com.nokia.bcp.auth.entity.ServiceResult;
@@ -54,6 +53,7 @@ import com.nokia.bcp.auth.repository.RobotTestCaseDao;
 import com.nokia.bcp.auth.repository.RobotTestSuiteDao;
 import com.nokia.bcp.auth.service.GitlabFileService;
 import com.nokia.bcp.auth.utils.LocaleUtils;
+import com.nokia.bcp.auth.utils.RFUtils;
 
 import feign.Response;
 import feign.Util;
