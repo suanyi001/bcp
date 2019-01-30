@@ -20,9 +20,14 @@ spring:
     # Show or not log for each sql query
     show-sql: true
     # Hibernate ddl auto (create, create-drop, update, validate)
-    # hibernate:
-      # ddl-auto: validate
+    hibernate:
+      # ddl-auto: create/create-drop/update/validate
+      ddl-auto: update
       # Naming strategy
+    open-in-view: true
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
@@ -54,6 +59,26 @@ spring:
     basename: messages/messages
     cache-second: 3600
     encoding: UTF-8
+  servlet:
+    multipart:
+      # 上传文件总的最大值
+      max-request-size: 10MB
+      # 单个文件的最大值
+      max-file-size: 10MB
 management:
   security:
     enabled: false
+feign: 
+  httpclient: 
+    enabled: true
+org:
+  apache:
+    tomcat:
+      util:
+        buf:
+          UDecoder:
+            # 允许 URL 中出现 %2F(/)
+            ALLOW_ENCODED_SLASH: true
+bcp:
+  upload:
+    tempPath: D:/
