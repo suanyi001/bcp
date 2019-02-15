@@ -14,8 +14,8 @@ import com.nokia.bcp.auth.entity.DevopsHarbor;
 import com.nokia.bcp.auth.entity.DevopsJenkins;
 import com.nokia.bcp.auth.entity.DevopsUser;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class DevopsGroupDaoTest {
 
 	@Autowired

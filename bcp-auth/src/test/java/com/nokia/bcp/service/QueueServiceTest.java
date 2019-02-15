@@ -19,7 +19,7 @@ public class QueueServiceTest {
 	@Test
 	public void findContainers() throws Exception {
 		long startTime = System.currentTimeMillis();
-		int seqCount = 10000;
+		int seqCount = 1000000;
 		for (int i = 0; i < seqCount; i++) {
 			queueService.incrementAndGet("TAB_ID_SYS_USER");
 		}
