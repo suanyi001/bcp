@@ -33,7 +33,7 @@ public class DevopsGroupDaoTest {
 	@Autowired
 	private DevopsUserDao userDao;
 
-	@Test
+	// @Test
 	public void hello() throws JsonProcessingException {
 		DevopsGitlab gitlab = gitlabDao.findById(1L).get();
 		DevopsHarbor harbor = harborDao.findById(1L).get();
