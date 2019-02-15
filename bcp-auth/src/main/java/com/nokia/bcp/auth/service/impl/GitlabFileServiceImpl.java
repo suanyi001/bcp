@@ -330,6 +330,7 @@ public class GitlabFileServiceImpl implements GitlabFileService {
 				return result;
 			}
 
+			// TODO 测试报告中是绝对路径，数据库中是相对路径
 			ParsedReport parsedReport = new ParsedReport();
 			RFTestReport testReport = RFUtils.parseReport(report);
 			// List<RobotTestSuite> testSuiteList =
